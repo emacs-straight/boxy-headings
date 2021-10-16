@@ -3,9 +3,9 @@
 ;; Copyright (C) 2021 Free Software Foundation, Inc.
 
 ;; Author: Tyler Grinn <tylergrinn@gmail.com>
-;; Version: 2.0.0
+;; Version: 2.1.0
 ;; File: boxy-headings.el
-;; Package-Requires: ((emacs "26.1") (boxy "1.0"))
+;; Package-Requires: ((emacs "26.1") (boxy "1.0") (org "9.3"))
 ;; Keywords: tools
 ;; URL: https://gitlab.com/tygrdev/boxy-headings
 
@@ -29,13 +29,13 @@
 ;; a heading and its parent can be set by using a REL property on the
 ;; child heading.  Valid values for REL are:
 ;;
-;;   - on top of
-;;   - in front of
+;;   - on-top
+;;   - in-front
 ;;   - behind
 ;;   - above
 ;;   - below
-;;   - to the right of
-;;   - to the left of
+;;   - right
+;;   - left
 ;;
 ;;   The tooltip in `boxy-headings' shows the values for each row
 ;;   in `org-columns' and can be customized the same way as org
@@ -54,7 +54,7 @@
 ;;;; Options
 
 (defgroup boxy-headings nil
-  "Customization options for boxy-headings"
+  "Customization options for boxy-headings."
   :group 'applications)
 
 (defcustom boxy-headings-margin-x 2
@@ -83,6 +83,10 @@
 
 (defcustom boxy-headings-default-visibility 1
   "Default level to display boxes."
+  :type 'number)
+
+(defcustom boxy-headings-max-visibility 2
+  "Maximum visibility to show when cycling global visibility."
   :type 'number)
 
 (defcustom boxy-headings-tooltips t
@@ -120,13 +124,27 @@
     (t (:background "gainsboro" :foreground "dim gray")))
   "Face for tooltips in a boxy diagram.")
 
+;;;; Variables
+
+(defvar boxy-headings-rel-alist
+  '(("on top of"       . ("on.+top"))
+    ("in front of"     . ("in.+front"))
+    ("behind"          . ("behind"))
+    ("below"           . ("below"))
+    ("to the left of"  . ("to the left of"))
+    ("to the right of" . ("to the right of")))
+  "Mapping from a boxy relationship to a list of regexes.
+
+Each regex will be tested against the REL property of each
+heading.")
+
 ;;;; Pretty printing
 
 (cl-defun boxy-headings-pp (box
                        &key
                        (display-buffer-fn 'display-buffer-pop-up-window)
                        (visibility boxy-headings-default-visibility)
-                       (max-visibility 2)
+                       (max-visibility boxy-headings-max-visibility)
                        select
                        header
                        (default-margin-x boxy-headings-margin-x)
@@ -223,13 +241,11 @@ diagram."
     (with-current-buffer (marker-buffer (car markers))
       (let* ((partitioned (seq-group-by
                            (lambda (h)
-                             (let ((child-rel (or (org-entry-get
-                                                   (org-element-property :begin h)
-                                                   "REL")
-                                                  "in")))
-                               (if (member child-rel boxy-children-relationships)
-                                   'children
-                                 'siblings)))
+                             (if (member (boxy-headings--get-rel
+                                          (org-element-property :begin h))
+                                         boxy-children-relationships)
+                                 'children
+                               'siblings))
                            (cddr heading)))
              (children (alist-get 'children partitioned))
              (siblings (alist-get 'siblings partitioned))
@@ -240,7 +256,7 @@ diagram."
                                         (lambda (column)
                                           (length (cadr (car column))))
                                         columns)))
-             (rel (save-excursion (goto-char pos) (or (org-entry-get nil "REL") "in")))
+             (rel (boxy-headings--get-rel pos))
              (level (if (member rel boxy-children-relationships)
                         (+ 1 parent-level)
                       parent-level))
@@ -301,6 +317,26 @@ diagram."
         (boxy-headings--add-heading heading document))
      headings)
     world))
+
+(defun boxy-headings--get-rel (&optional pos)
+  "Get the boxy relationship from an org heading at POS.
+
+POS can be nil to use the heading at point.
+
+The default relationship is 'in'."
+  (let ((heading-rel (org-entry-get pos "REL")))
+    (if (not heading-rel)
+        "in"
+      (seq-find
+       (lambda (rel)
+         (seq-some
+          (lambda (pattern)
+            (message "Testing pattern %s" pattern)
+            (string-match-p pattern heading-rel))
+          (alist-get rel boxy-headings-rel-alist
+                     nil nil #'equal)))
+       boxy-relationships
+       "in"))))
 
 (provide 'boxy-headings)
 

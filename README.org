@@ -5,8 +5,13 @@ View org files as a boxy diagram.
 =package-install RET boxy-headings RET=
 
 * Usage
+  :PROPERTIES:
+  :REL: right
+  :END:
 ** =boxy-headings=
-
+   :PROPERTIES:
+   :REL:      in-front
+   :END:
    To view all headings in an org-mode file as a boxy diagram, use
    the interactive function =boxy-headings=
 
@@ -17,27 +22,31 @@ View org files as a boxy diagram.
 
    To modify the relationship between a headline and its parent, add
    the property REL to the child headline. Valid values are:
-   - on top of
-   - in front of
+   - on-top
+   - in-front
    - behind
    - above
    - below
-   - to the right of
-   - to the left of
+   - right
+   - left
 
    The tooltip for each headline shows the values that would be
    displayed if the org file was in org columns view.
 
    [[file:demo/headings.gif]]
 * License
+  :PROPERTIES:
+  :REL:      below
+  :END:
   GPLv3
 * Development
-
+  :PROPERTIES:
+  :REL:      below
+  :END:
 ** Setup
-
    Install [[https://github.com/doublep/eldev#installation][eldev]]
 
-** Commands:
+** Commands
 *** =eldev lint=
     Lint the =boxy-headings.el= file
 *** =eldev compile=

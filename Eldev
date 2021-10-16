@@ -1,8 +1,12 @@
 ; -*- mode: emacs-lisp; lexical-binding: t -*-
 
+(eldev-use-package-archive 'gnu)
+
 (setq eldev-standard-excludes '(".*" "/dist/" "/deps/"))
 
 (eldev-use-local-dependency "deps/boxy" 'packaged)
+
+(eldev-use-plugin 'autoloads)
 
 (eldev-defcommand
  boxy_headings-md5 (&rest _)
