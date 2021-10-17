@@ -13,6 +13,7 @@ package:
   script:
     - eldev lint
     - eldev compile -W
+    - eldev test
     - eldev package
     - eldev md5
   artifacts:

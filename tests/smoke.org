@@ -1,0 +1,125 @@
+#+TITLE: Boxy headings smoke test
+#+TODO: FAIL | PASS
+
+* PASS Smoke test
+  #+begin_src org
+    ,* Above
+      :PROPERTIES:
+      :REL:      above
+      :END:
+    ,* Below
+      :PROPERTIES:
+      :REL:      below
+      :END:
+    ,* Left
+      :PROPERTIES:
+      :REL:      left
+      :END:
+    ,* Right
+      :PROPERTIES:
+      :REL:      right
+      :END:
+    ,* In
+    ,* Behind
+      :PROPERTIES:
+      :REL:      behind
+      :END:
+    ,* On top
+      :PROPERTIES:
+      :REL:      on-top
+      :END:
+    ,* In front
+      :PROPERTIES:
+      :REL:      in-front
+      :END:
+  #+end_src
+  #+begin_example
+
+  ╭────────╮     ╭──────────╮                            ╭─────────╮
+  │        │     │          │                            │         │
+  │  Left  │     │  On top  │                            │  Right  │
+  │        │     │          │                            │         │
+  ╰────────╯  ╭──┴──────────┴─────────────────────────╮  ╰─────────╯
+              │                                       │
+              │  *Org Src smoke.org[ org ]*           │
+              │                                       │
+              │  ╭─────────╮  ╭──────╮  ╭╌╌╌╌╌╌╌╌╌╌╮  │
+              │  │         │  │      │  ╎          ╎  │
+              │  │  Above  │  │  In  │  ╎  Behind  ╎  │
+              │  │         │  │      │  ╎          ╎  │
+              │  ╰─────────╯  ╰──────╯  ╰╌╌╌╌╌╌╌╌╌╌╯  │
+              │                                       │
+              │  ╭────────────╮                       │
+              │  │            │                       │
+              │  │  In front  │                       │
+              │  │            │                       │
+              ╰──┴────────────┴───────────────────────╯
+
+              ╭─────────╮
+              │         │
+              │  Below  │
+              │         │
+              ╰─────────╯
+  #+end_example
+
+* PASS Compat test
+  Check that the old instructions for REL still work
+  #+begin_src org
+    ,* Above
+      :PROPERTIES:
+      :REL:      above
+      :END:
+    ,* Below
+      :PROPERTIES:
+      :REL:      below
+      :END:
+    ,* Left
+      :PROPERTIES:
+      :REL:      to the left of
+      :END:
+    ,* Right
+      :PROPERTIES:
+      :REL:      to the right of
+      :END:
+    ,* In
+    ,* Behind
+      :PROPERTIES:
+      :REL:      behind
+      :END:
+    ,* On top
+      :PROPERTIES:
+      :REL:      on top of
+      :END:
+    ,* In front
+      :PROPERTIES:
+      :REL:      in front of
+      :END:
+  #+end_src
+  #+begin_example
+
+  ╭────────╮     ╭──────────╮                            ╭─────────╮
+  │        │     │          │                            │         │
+  │  Left  │     │  On top  │                            │  Right  │
+  │        │     │          │                            │         │
+  ╰────────╯  ╭──┴──────────┴─────────────────────────╮  ╰─────────╯
+              │                                       │
+              │  *Org Src smoke.org[ org ]*           │
+              │                                       │
+              │  ╭─────────╮  ╭──────╮  ╭╌╌╌╌╌╌╌╌╌╌╮  │
+              │  │         │  │      │  ╎          ╎  │
+              │  │  Above  │  │  In  │  ╎  Behind  ╎  │
+              │  │         │  │      │  ╎          ╎  │
+              │  ╰─────────╯  ╰──────╯  ╰╌╌╌╌╌╌╌╌╌╌╯  │
+              │                                       │
+              │  ╭────────────╮                       │
+              │  │            │                       │
+              │  │  In front  │                       │
+              │  │            │                       │
+              ╰──┴────────────┴───────────────────────╯
+
+              ╭─────────╮
+              │         │
+              │  Below  │
+              │         │
+              ╰─────────╯
+  #+end_example

@@ -20,3 +20,82 @@
   (append
    (directory-files eldev-dist-dir t "\\.tar\\'")
    (directory-files eldev-dist-dir t "\\.el\\'"))))
+
+(eldev-defcommand
+ boxy_headings-test (&rest _)
+ "Runs tests against all org files in tests folder."
+ :override t
+ (eldev-load-project-dependencies)
+ (require 'boxy-headings)
+ (let ((failures 0))
+   (cl-flet* ((get-expected ()
+                            (save-excursion
+                              (re-search-forward "#\\+begin_example")
+                              (org-element-property :value (org-element-at-point))))
+              (get-actual ()
+                          (with-current-buffer (get-buffer "*Boxy*")
+                            (buffer-string)))
+              (print-result (title result)
+                            (message "    %s : %s"
+                                     (if result
+                                         "\033[0;32mPASS\033[0m"
+                                       "\033[0;31mFAIL\033[0m")
+                                     title)
+                            (if (and (not result) (fboundp 'diff-buffers))
+                                (let ((expected (get-expected)))
+                                  (save-window-excursion
+                                    (with-temp-buffer
+                                      (insert expected)
+                                      (diff-buffers (get-buffer "*Boxy*")
+                                                    (current-buffer)
+                                                    nil t))
+                                    (with-current-buffer (get-buffer "*Diff*")
+                                      (message "@@ -actual +expected @@")
+                                      (message
+                                       (string-join
+                                        (butlast
+                                         (butlast
+                                          (cdddr
+                                           (split-string
+                                            (buffer-string)
+                                            "\n"))))
+                                          "\n")))))))
+              (set-result (result)
+                          (if (not result) (cl-incf failures))
+                          (let ((inhibit-message t))
+                            (org-todo (if result "PASS" "FAIL")))))
+     (mapc
+      (lambda (test)
+        (find-file test)
+        (message "\n%s:\n" (file-name-base test))
+        (message "\n  Testing headlines:\n")
+        (org-babel-map-src-blocks nil
+          (goto-char beg-block)
+          (let* ((title (org-entry-get nil "ITEM"))
+                 (boxy-headings-margin-y (if (org-entry-get nil "MARGIN-Y")
+                                             (string-to-number (org-entry-get nil "MARGIN-Y" t))
+                                           boxy-headings-margin-y))
+                 (boxy-headings-margin-x (if (org-entry-get nil "MARGIN-X" t)
+                                             (string-to-number (org-entry-get nil "MARGIN-X" t))
+                                           boxy-headings-margin-x))
+                 (boxy-headings-padding-y (if (org-entry-get nil "PADDING-Y" t)
+                                              (string-to-number (org-entry-get nil "PADDING-Y" t))
+                                            boxy-headings-padding-y))
+                 (boxy-headings-padding-x (if (org-entry-get nil "PADDING-X" t)
+                                              (string-to-number (org-entry-get nil "PADDING-X" t))
+                                            boxy-headings-padding-x))
+                 (result (catch 'result
+                           (save-window-excursion
+                             (condition-case nil
+                                 (progn
+                                   (org-edit-special)
+                                   (save-window-excursion (boxy-headings))
+                                   (org-edit-src-exit))
+                               (error (throw 'result nil))))
+                           (string= (get-expected) (get-actual)))))
+            (print-result title result)
+            (set-result result)))
+        (save-buffer)
+        (kill-buffer))
+      (directory-files "tests" t "\\.org\\'"))
+     (and (> failures 0) (error "Test run had failures")))))
