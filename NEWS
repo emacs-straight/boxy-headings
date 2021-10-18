@@ -1,0 +1,53 @@
+# -*- mode: org -*-
+
+* 2.1.2
+
+- Added NEWS file
+- Fixed bug where sibling relationships were not being added
+
+* 2.1.1
+
+v2.1.1
+
+Fix typo that caused 'left' and 'right' to not be valid REL property values.
+
+See merge request tygrdev/boxy-headings!5
+
+* 2.1.0
+
+v2.1.0
+
+Bug fixes
+- Added org 9.3 dependency for emacs 26.
+
+Improvements
+- Generalized `REL` property using regex to match, for example, all of "in front" "in front of" and "in-front".
+- Added max visibility option
+
+Fixes #2
+
+See merge request tygrdev/boxy-headings!4
+
+* 2.0.0
+
+2.0.0
+
+- Renamed boxy-headlines to boxy-headings
+- Standardized defface calls
+
+See merge request tygrdev/boxy-headings!3
+
+* 1.0.2
+
+Updated elpaignore
+
+See merge request tygrdev/boxy-headlines!2
+
+* 1.0.1
+
+1.0.1
+
+- Added changes from Stefan Monnier
+- Changed from cl-defmethod to defun
+
+See merge request tygrdev/boxy-headlines!1

@@ -123,3 +123,56 @@
               │         │
               ╰─────────╯
   #+end_example
+
+* PASS Children test
+  #+begin_src org
+    ,* test
+    ,** Above
+       :PROPERTIES:
+       :REL:      above
+       :END:
+    ,** Below
+       :PROPERTIES:
+       :REL:      below
+       :END:
+    ,** Left
+       :PROPERTIES:
+       :REL:      left
+       :END:
+    ,** Right
+       :PROPERTIES:
+       :REL:      right
+       :END:
+    ,** In
+    ,** Behind
+       :PROPERTIES:
+       :REL:      behind
+       :END:
+    ,** On top
+       :PROPERTIES:
+       :REL:      on-top
+       :END:
+    ,** In front
+       :PROPERTIES:
+       :REL:      in-front
+       :END:
+  #+end_src
+  #+begin_example
+
+  ╭───────────────────────────────────────╮
+  │                                       │
+  │  *Org Src smoke.org[ org ]*           │
+  │                                       │
+  │  ╭────────╮  ╔════════╗  ╭─────────╮  │
+  │  │        │  ║        ║  │         │  │
+  │  │  Left  │  ║  test  ║  │  Right  │  │
+  │  │        │  ║        ║  │         │  │
+  │  ╰────────╯  ╚════════╝  ╰─────────╯  │
+  │                                       │
+  │              ╭─────────╮              │
+  │              │         │              │
+  │              │  Below  │              │
+  │              │         │              │
+  │              ╰─────────╯              │
+  ╰───────────────────────────────────────╯
+  #+end_example

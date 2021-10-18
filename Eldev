@@ -99,3 +99,18 @@
         (kill-buffer))
       (directory-files "tests" t "\\.org\\'"))
      (and (> failures 0) (error "Test run had failures")))))
+
+(eldev-defcommand
+ boxy_headings-news (&rest _)
+ "Build NEWS file from gitlab releases."
+ (with-current-buffer
+     (url-retrieve-synchronously "https://gitlab.com/api/v4/projects/30139198/releases")
+   (delete-region (point-min) (point))
+   (let ((response (json-parse-buffer :object-type 'plist :array-type 'list :null-object nil)))
+     (with-temp-file "NEWS"
+       (insert "# -*- mode: org -*-")
+       (dolist (release response)
+         (when-let ((name (plist-get release :tag_name))
+                    (description (plist-get release :description)))
+           (insert (format "\n\n* %s\n" name))
+           (insert description)))))))
