@@ -5,7 +5,7 @@
 ;; Author: Tyler Grinn <tylergrinn@gmail.com>
 ;; Version: 2.1.2
 ;; File: boxy-headings.el
-;; Package-Requires: ((emacs "26.1") (boxy "1.0") (org "9.3"))
+;; Package-Requires: ((emacs "26.1") (boxy "1.0") (org "9.4"))
 ;; Keywords: tools
 ;; URL: https://gitlab.com/tygrdev/boxy-headings
 
@@ -304,11 +304,9 @@ diagram."
   "Create a `boxy-box' from the current buffer's headings."
   (org-columns-get-format)
   (let* ((headings (cddr (org-element-parse-buffer 'headline)))
-         (filename (buffer-name))
-         (title (or (concat (file-name-base filename) "." (file-name-extension filename))
-                    "Document"))
+         (title (cadr (car (org-collect-keywords '("title")))))
          (world (boxy-box))
-         (document (boxy-box :name title
+         (document (boxy-box :name (or title (buffer-name) "Document")
                              :tooltip ""
                              :markers (list (point-min-marker)))))
     (boxy-add-next document world)

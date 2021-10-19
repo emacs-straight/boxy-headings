@@ -11,7 +11,10 @@ package:
     - curl -fsSL https://raw.github.com/doublep/eldev/master/webinstall/eldev | sh
     - export PATH=$PATH:/root/.eldev/bin
   script:
-    - eldev lint
+    - eldev lint doc
+    - eldev lint re
+    # TODO package-lint erroneously says emacs 26 doesn't support org-collect-keywords
+    # - eldev lint package
     - eldev compile -W
     - eldev test
     - eldev package
