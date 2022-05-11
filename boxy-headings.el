@@ -3,7 +3,7 @@
 ;; Copyright (C) 2021 Free Software Foundation, Inc.
 
 ;; Author: Tyler Grinn <tylergrinn@gmail.com>
-;; Version: 2.1.2
+;; Version: 2.1.3
 ;; File: boxy-headings.el
 ;; Package-Requires: ((emacs "26.1") (boxy "1.0") (org "9.4"))
 ;; Keywords: tools
@@ -277,6 +277,7 @@ diagram."
                                        columns
                                        "\n")
                             :markers (list (set-marker (point-marker) pos))
+                            :post-jump-hook 'org-reveal
                             :in-front (string= rel "in front of")
                             :on-top (string= rel "on top of")
                             :y-order (cond

@@ -2,6 +2,13 @@
 #+TODO: FAIL | PASS
 
 * PASS Smoke test
+  :PROPERTIES:
+  :MARGIN-Y: 1
+  :MARGIN-X: 2
+  :PADDING-Y: 1
+  :PADDING-X: 2
+  :END:
+  
   #+begin_src org
     ,* Above
       :PROPERTIES:
@@ -63,6 +70,12 @@
   #+end_example
 
 * PASS Compat test
+  :PROPERTIES:
+  :MARGIN-Y: 1
+  :MARGIN-X: 2
+  :PADDING-Y: 1
+  :PADDING-X: 2
+  :END:
   Check that the old instructions for REL still work
   #+begin_src org
     ,* Above
@@ -125,6 +138,12 @@
   #+end_example
 
 * PASS Children test
+  :PROPERTIES:
+  :MARGIN-Y: 1
+  :MARGIN-X: 2
+  :PADDING-Y: 1
+  :PADDING-X: 2
+  :END:
   #+begin_src org
     ,* test
     ,** Above
