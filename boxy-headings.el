@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2021 Free Software Foundation, Inc.
 
-;; Author: Tyler Grinn <tylergrinn@gmail.com>
-;; Version: 2.1.3
+;; Author: Taylor Grinn <grinntaylor@gmail.com>
+;; Version: 2.1.4
 ;; File: boxy-headings.el
 ;; Package-Requires: ((emacs "26.1") (boxy "1.0") (org "9.4"))
 ;; Keywords: tools
