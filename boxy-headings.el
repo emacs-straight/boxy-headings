@@ -37,9 +37,9 @@
 ;;   - right
 ;;   - left
 ;;
-;;   The tooltip in `boxy-headings' shows the values for each row
-;;   in `org-columns' and can be customized the same way as org
-;;   columns view.
+;; The tooltip in `boxy-headings' shows the values for each row in
+;; `org-columns' and can be customized the same way as org columns
+;; view.
 
 ;;; Code:
 
