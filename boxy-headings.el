@@ -1,11 +1,11 @@
 ;;; boxy-headings.el --- View org files in a boxy diagram -*- lexical-binding: t -*-
 
-;; Copyright (C) 2021-2024 Free Software Foundation, Inc.
+;; Copyright (C) 2021-2025 Free Software Foundation, Inc.
 
 ;; Author: Amy Grinn <grinn.amy@gmail.com>
-;; Version: 2.1.6
+;; Version: 2.1.8
 ;; File: boxy-headings.el
-;; Package-Requires: ((emacs "26.1") (boxy "1.1") (org "9.4"))
+;; Package-Requires: ((emacs "26.1") (boxy "2.0") (org "9.4"))
 ;; Keywords: tools
 ;; URL: https://gitlab.com/grinn.amy/boxy-headings
 
@@ -46,7 +46,6 @@
 ;;;; Requirements
 
 (require 'boxy)
-(require 'eieio)
 (require 'org-element)
 (require 'org-colview)
 (require 'cl-lib)
@@ -286,18 +285,18 @@ diagram."
                                       (t 0))
                             :primary t)))
         (boxy-add-next box parent)
-        (if children
-            (object-add-to-list box :expand-children
-                                `(lambda (box)
-                                   (mapc
-                                    (lambda (h) (boxy-headings--add-heading h box))
-                                    ',children))))
-        (if siblings
-            (object-add-to-list box :expand-siblings
-                                `(lambda (box)
-                                   (mapc
-                                    (lambda (h) (boxy-headings--add-heading h box))
-                                    ',siblings))))))))
+        (when children
+          (push `(lambda (box)
+                   (mapc
+                    (lambda (h) (boxy-headings--add-heading h box))
+                    ',children))
+                (boxy-box-expand-children box)))
+        (when siblings
+          (push `(lambda (box)
+                   (mapc
+                    (lambda (h) (boxy-headings--add-heading h box))
+                    ',siblings))
+                (boxy-box-expand-siblings box)))))))
 
 ;;;; Utility expressions
 
@@ -322,7 +321,7 @@ diagram."
 
 POS can be nil to use the heading at point.
 
-The default relationship is 'in'."
+The default relationship is \"in\"."
   (let ((heading-rel (org-entry-get pos "REL")))
     (if (not heading-rel)
         "in"
