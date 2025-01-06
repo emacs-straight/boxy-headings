@@ -1,4 +1,34 @@
-# -*- mode: org -*-
+#+title: NEWS
+
+* 2.1.9
+
+- Updated NEWS file
+
+* 2.1.8
+
+- Remove eieio dependency
+
+* 2.1.7
+
+- Updating boxy dependency to 2.0.0
+
+* 2.1.6
+
+- Updated documentation
+
+* 2.1.5
+
+- Moved project location
+
+* 2.1.4
+
+- Update dependencies
+
+* 2.1.3
+
+- Use #+TITLE property if it exists
+- Reveal cursor location if in a hidden subtree after jumping to the
+  location of a box
 
 * 2.1.2
 
