@@ -3,7 +3,7 @@
 ;; Copyright (C) 2021-2025 Free Software Foundation, Inc.
 
 ;; Author: Amy Grinn <grinn.amy@gmail.com>
-;; Version: 2.1.9
+;; Version: 2.1.10
 ;; File: boxy-headings.el
 ;; Package-Requires: ((emacs "26.1") (boxy "2.0") (org "9.4"))
 ;; Keywords: tools
@@ -236,67 +236,66 @@ diagram."
 
 (defun boxy-headings--add-heading (heading parent)
   "Add HEADING to world as a child of PARENT."
-  (with-slots (markers (parent-level level)) parent
-    (with-current-buffer (marker-buffer (car markers))
-      (let* ((partitioned (seq-group-by
-                           (lambda (h)
-                             (if (member (boxy-headings--get-rel
-                                          (org-element-property :begin h))
-                                         boxy-children-relationships)
-                                 'children
-                               'siblings))
-                           (cddr heading)))
-             (children (alist-get 'children partitioned))
-             (siblings (alist-get 'siblings partitioned))
-             (pos (org-element-property :begin heading))
-             (columns (save-excursion (goto-char pos) (org-columns--collect-values)))
-             (max-column-length (apply #'max 0
-                                       (mapcar
-                                        (lambda (column)
-                                          (length (cadr (car column))))
-                                        columns)))
-             (rel (boxy-headings--get-rel pos))
-             (level (if (member rel boxy-children-relationships)
-                        (+ 1 parent-level)
-                      parent-level))
-             (name (org-element-property :title heading))
-             (box (boxy-box :name (if (string-match org-link-bracket-re name)
-                                      (match-string 2 name)
-                                    name)
-                            :rel rel
-                            :level level
-                            :rel-box parent
-                            :parent parent
-                            :tooltip (mapconcat
-                                       (lambda (column)
-                                         (format
-                                          (concat "%" (number-to-string max-column-length) "s : %s")
-                                          (cadr (car column))
-                                          (cadr column)))
-                                       columns
-                                       "\n")
-                            :markers (list (set-marker (point-marker) pos))
-                            :post-jump-hook 'org-reveal
-                            :in-front (string= rel "in front of")
-                            :on-top (string= rel "on top of")
-                            :y-order (cond
-                                      ((string= rel "in front of") 1.0e+INF)
-                                      ((string= rel "on top of") -1.0e+INF)
-                                      (t 0))
-                            :primary t)))
-        (boxy-add-next box parent)
-        (when children
-          (push `(lambda (box)
-                   (mapc
-                    (lambda (h) (boxy-headings--add-heading h box))
-                    ',children))
-                (boxy-box-expand-children box)))
-        (when siblings
-          (push `(lambda (box)
-                   (mapc
-                    (lambda (h) (boxy-headings--add-heading h box))
-                    ',siblings))
-                (boxy-box-expand-siblings box)))))))
+  (with-current-buffer (marker-buffer (car (boxy-box-markers parent)))
+    (let* ((partitioned (seq-group-by
+                         (lambda (h)
+                           (if (member (boxy-headings--get-rel
+                                        (org-element-property :begin h))
+                                       boxy-children-relationships)
+                               'children
+                             'siblings))
+                         (cddr heading)))
+           (children (alist-get 'children partitioned))
+           (siblings (alist-get 'siblings partitioned))
+           (pos (org-element-property :begin heading))
+           (columns (save-excursion (goto-char pos) (org-columns--collect-values)))
+           (max-column-length (apply #'max 0
+                                     (mapcar
+                                      (lambda (column)
+                                        (length (cadr (car column))))
+                                      columns)))
+           (rel (boxy-headings--get-rel pos))
+           (level (if (member rel boxy-children-relationships)
+                      (+ 1 (boxy-box-level parent))
+                    (boxy-box-level parent)))
+           (name (org-element-property :title heading))
+           (box (boxy-box :name (if (string-match org-link-bracket-re name)
+                                    (match-string 2 name)
+                                  name)
+                          :rel rel
+                          :level level
+                          :rel-box parent
+                          :parent parent
+                          :tooltip (mapconcat
+                                    (lambda (column)
+                                      (format
+                                       (concat "%" (number-to-string max-column-length) "s : %s")
+                                       (cadr (car column))
+                                       (cadr column)))
+                                    columns
+                                    "\n")
+                          :markers (list (set-marker (point-marker) pos))
+                          :post-jump-hook 'org-reveal
+                          :in-front (string= rel "in front of")
+                          :on-top (string= rel "on top of")
+                          :y-order (cond
+                                    ((string= rel "in front of") 1.0e+INF)
+                                    ((string= rel "on top of") -1.0e+INF)
+                                    (t 0))
+                          :primary t)))
+      (boxy-add-next box parent)
+      (when children
+        (push `(lambda (box)
+                 (mapc
+                  (lambda (h) (boxy-headings--add-heading h box))
+                  ',children))
+              (boxy-box-expand-children box)))
+      (when siblings
+        (push `(lambda (box)
+                 (mapc
+                  (lambda (h) (boxy-headings--add-heading h box))
+                  ',siblings))
+              (boxy-box-expand-siblings box))))))
 
 ;;;; Utility expressions
 
