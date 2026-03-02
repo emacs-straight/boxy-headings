@@ -3,9 +3,14 @@
                             ━━━━━━━━━━━━━━━
 
 
+*This projet has moved to [codeberg]*
+
 View org files as a boxy diagram.
 
 `package-install RET boxy-headings RET'
+
+
+[codeberg] <https://codeberg.org/strawburster/boxy-headings>
 
 
 1 Usage

@@ -1,0 +1,113 @@
+                                 ━━━━━━
+                                  NEWS
+                                 ━━━━━━
+
+
+1 2.1.9
+═══════
+
+  • Updated NEWS file
+
+
+2 2.1.8
+═══════
+
+  • Remove eieio dependency
+
+
+3 2.1.7
+═══════
+
+  • Updating boxy dependency to 2.0.0
+
+
+4 2.1.6
+═══════
+
+  • Updated documentation
+
+
+5 2.1.5
+═══════
+
+  • Moved project location
+
+
+6 2.1.4
+═══════
+
+  • Update dependencies
+
+
+7 2.1.3
+═══════
+
+  • Use #+TITLE property if it exists
+  • Reveal cursor location if in a hidden subtree after jumping to the
+    location of a box
+
+
+8 2.1.2
+═══════
+
+  • Added NEWS file
+  • Fixed bug where sibling relationships were not being added
+
+
+9 2.1.1
+═══════
+
+  v2.1.1
+
+  Fix typo that caused 'left' and 'right' to not be valid REL property
+  values.
+
+  See merge request tygrdev/boxy-headings!5
+
+
+10 2.1.0
+════════
+
+  v2.1.0
+
+  Bug fixes
+  • Added org 9.3 dependency for emacs 26.
+
+  Improvements
+  • Generalized `REL` property using regex to match, for example, all of
+    "in front" "in front of" and "in-front".
+  • Added max visibility option
+
+  Fixes #2
+
+  See merge request tygrdev/boxy-headings!4
+
+
+11 2.0.0
+════════
+
+  2.0.0
+
+  • Renamed boxy-headlines to boxy-headings
+  • Standardized defface calls
+
+  See merge request tygrdev/boxy-headings!3
+
+
+12 1.0.2
+════════
+
+  Updated elpaignore
+
+  See merge request tygrdev/boxy-headlines!2
+
+
+13 1.0.1
+════════
+
+  1.0.1
+
+  • Added changes from Stefan Monnier
+  • Changed from cl-defmethod to defun
+
+  See merge request tygrdev/boxy-headlines!1
