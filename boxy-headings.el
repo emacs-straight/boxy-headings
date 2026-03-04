@@ -1,13 +1,13 @@
 ;;; boxy-headings.el --- View org files in a boxy diagram -*- lexical-binding: t -*-
 
-;; Copyright (C) 2021-2025 Free Software Foundation, Inc.
+;; Copyright (C) 2021-2026 Free Software Foundation, Inc.
 
-;; Author: Amy Grinn <grinn.amy@gmail.com>
-;; Version: 2.1.10
+;; Author: Amy Pillow <amypillow@lavache.com>
+;; Version: 2.1.11
 ;; File: boxy-headings.el
 ;; Package-Requires: ((emacs "26.1") (boxy "2.0") (org "9.4"))
 ;; Keywords: tools
-;; URL: https://gitlab.com/grinn.amy/boxy-headings
+;; URL: https://codeberg.org/strawburster/boxy-headings
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
